@@ -1,0 +1,66 @@
+---
+layout: runbook
+title: '#4471 · three problems, one ticket'
+owner: furtivespy
+status: open
+reviewed: 2026-10-28
+signature: furtivespy
+---
+
+<script>
+  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+</script>
+
+[#4471](/kb/incidents/4471) is marked known: one issue, one fix queued. Its own table says
+otherwise. The reports were merged on subject line ([decision 0001](/kb/decisions/0001-dedupe-by-subject)),
+and "wrong day on the invite" is what three different bugs look like from the outside.
+
+<Callout kind="warn">
+The queued parser fix closes one of the three. The other two keep coming in after it ships.
+</Callout>
+
+## What was merged
+
+<ProblemTable
+  ticket={4471}
+  tickets={{
+    parser: 'https://github.com/furtivespy/what-it-shows/issues/1',
+    hint: 'https://github.com/furtivespy/what-it-shows/issues/2',
+    oneDayMove: 'https://github.com/furtivespy/what-it-shows/issues/3',
+  }}
+/>
+
+Each report is counted once (the export repeats some ids) and placed by its tenant, not by
+intake's tag: the tag is a guess from the reporter's browser.
+
+## The three problems
+
+**`parser`: the shared parser reads day-first dates month first.** Every tenant writes the day
+first, so a booking for 7 June becomes an invite for 6 July. This is the bug #4471 was opened for.
+Tracked in [furtivespy/what-it-shows#1](https://github.com/furtivespy/what-it-shows/issues/1).
+
+**`hint`: booking-v3 tells people to type the month first, then reads the day first.** Its date
+field says `MM/DD/YYYY`; the form reads the tenant's way. Only reports that came in through the
+form, from tenants on booking-v3. The date is wrong before the parser ever sees it, so the parser
+fix leaves these alone. #4471's own table already marks this row "not this ticket — no ticket of
+its own". Tracked in [furtivespy/what-it-shows#2](https://github.com/furtivespy/what-it-shows/issues/2).
+
+**`oneDayMove`: the invite lands one day off.** Tuesday 12 May shows as Monday 11 May; a client in
+Lisbon gets Tuesday, a client in Toronto gets Monday. Swapping day and month cannot do that. The
+desk already read these apart (`desk-notes.json`), and #4471 still counts them under the parser
+by tenant, in a footnote. The pattern points at invite dates crossing a time zone or midnight.
+Tracked in [furtivespy/what-it-shows#3](https://github.com/furtivespy/what-it-shows/issues/3).
+
+## If a row turns orange
+
+A problem with no ticket means reports arrived that none of the three explain. Read them before
+merging them anywhere.
+
+## Lessons
+
+- Same subject is not same cause. Merge on cause: tenant, form and channel, then the body.
+- A footnote under someone else's count is a ticket nobody opened.
+
+<RenderStamp {signature} />
