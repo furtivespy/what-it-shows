@@ -32,8 +32,8 @@ The queued parser fix closes one of the three. The other two keep coming in afte
   }}
 />
 
-Each report is counted once (the export repeats some ids) and placed by its tenant, not by
-intake's tag: the tag is a guess from the reporter's browser.
+Counted the desk's way, with the same logic as #4471's own table: each id once, placed by its
+tenant and channel, not by intake's tag.
 
 ## The three problems
 
@@ -49,8 +49,8 @@ its own". Tracked in [furtivespy/what-it-shows#2](https://github.com/furtivespy/
 
 **`oneDayMove`: the invite lands one day off.** Tuesday 12 May shows as Monday 11 May; a client in
 Lisbon gets Tuesday, a client in Toronto gets Monday. Swapping day and month cannot do that. The
-desk already read these apart (`desk-notes.json`), and #4471 still counts them under the parser
-by tenant, in a footnote. The pattern points at invite dates crossing a time zone or midnight.
+desk already read these apart (`desk-notes.json`) and still counts them under the parser by
+tenant, in a footnote: a footnote is not a ticket. The pattern points at invite dates crossing a time zone or midnight.
 Tracked in [furtivespy/what-it-shows#3](https://github.com/furtivespy/what-it-shows/issues/3).
 
 ## If a row turns orange
