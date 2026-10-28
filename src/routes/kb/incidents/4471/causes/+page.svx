@@ -8,7 +8,7 @@ signature: furtivespy
 ---
 
 <script>
-  import ProblemTable from '#lib/kb/ProblemTable.svelte';
+  import CauseTable from '#lib/kb/CauseTable.svelte';
   import Callout from '#lib/kb/Callout.svelte';
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
 </script>
@@ -23,40 +23,29 @@ The queued parser fix closes one of the three. The other two keep coming in afte
 
 ## What was merged
 
-<ProblemTable
-  ticket={4471}
-  tickets={{
-    parser: 'https://github.com/furtivespy/what-it-shows/issues/1',
-    hint: 'https://github.com/furtivespy/what-it-shows/issues/2',
-    oneDayMove: 'https://github.com/furtivespy/what-it-shows/issues/3',
-  }}
-/>
+<CauseTable ticket={4471} />
 
-Counted the desk's way, with the same logic as #4471's own table: each id once, placed by its
-tenant and channel, not by intake's tag.
+Each row and the footnote under it is one problem, and each now has a ticket of its own.
 
 ## The three problems
 
 **`parser`: the shared parser reads day-first dates month first.** Every tenant writes the day
-first, so a booking for 7 June becomes an invite for 6 July. This is the bug #4471 was opened for.
-Tracked in [furtivespy/what-it-shows#1](https://github.com/furtivespy/what-it-shows/issues/1).
+first, so a booking for 7 June becomes an invite for 6 July. This is the bug #4471 was opened for:
+the `parser` row. Tracked in
+[furtivespy/what-it-shows#1](https://github.com/furtivespy/what-it-shows/issues/1).
 
 **`hint`: booking-v3 tells people to type the month first, then reads the day first.** Its date
 field says `MM/DD/YYYY`; the form reads the tenant's way. Only reports that came in through the
 form, from tenants on booking-v3. The date is wrong before the parser ever sees it, so the parser
-fix leaves these alone. #4471's own table already marks this row "not this ticket — no ticket of
+fix leaves these alone. This is the `hint` row, the one marked "not this ticket — no ticket of
 its own". Tracked in [furtivespy/what-it-shows#2](https://github.com/furtivespy/what-it-shows/issues/2).
 
-**`oneDayMove`: the invite lands one day off.** Tuesday 12 May shows as Monday 11 May; a client in
+**One-day move: the invite lands one day off.** Tuesday 12 May shows as Monday 11 May; a client in
 Lisbon gets Tuesday, a client in Toronto gets Monday. Swapping day and month cannot do that. The
-desk already read these apart (`desk-notes.json`) and still counts them under the parser by
-tenant, in a footnote: a footnote is not a ticket. The pattern points at invite dates crossing a time zone or midnight.
-Tracked in [furtivespy/what-it-shows#3](https://github.com/furtivespy/what-it-shows/issues/3).
-
-## If a row turns orange
-
-A problem with no ticket means reports arrived that none of the three explain. Read them before
-merging them anywhere.
+desk already read these apart (`desk-notes.json`): they are the footnote under the `parser` row,
+counted there by tenant. A footnote is not a ticket. The pattern points at invite dates crossing a
+time zone or midnight. Tracked in
+[furtivespy/what-it-shows#3](https://github.com/furtivespy/what-it-shows/issues/3).
 
 ## Lessons
 
