@@ -1,6 +1,6 @@
 ---
 layout: runbook
-title: '#4471 · two causes, one ticket'
+title: '#4471 · three problems, one ticket'
 owner: furtivespy
 status: open
 reviewed: 2026-10-29
@@ -15,24 +15,24 @@ signature: furtivespy
 
 [#4471](/kb/incidents/4471) is marked known: one issue, one fix queued. Its own table says
 otherwise. The reports were merged on subject line ([decision 0001](/kb/decisions/0001-dedupe-by-subject)),
-and "wrong day on the invite" is what two different bugs look like from the outside.
+and "wrong day on the invite" is what three different bugs look like from the outside.
 
 <Callout kind="warn">
-The queued parser fix closes one of the two. The other keeps coming in after it ships.
+The queued parser fix closes one of the three. The other two keep coming in after it ships.
 </Callout>
 
 ## What was merged
 
 <CauseTable ticket={4471} />
 
-Each row is one cause, and each now has a ticket of its own.
+The table has a row per cause and a footnote under the `parser` row. The footnote is not the
+parser bug: it is a third problem the table files by tenant.
 
-## The two tickets
+## The three tickets
 
 **`parser`: the shared parser reads day-first dates month first.** Every tenant writes the day
 first, so a booking for 7 June becomes an invite for 6 July. This is the bug #4471 was opened for:
-the `parser` row. The one-day moves footnoted under that row are filed there by tenant, and the
-same ticket covers them. Tracked in
+the `parser` row, without the one-day moves footnoted under it. Tracked in
 [furtivespy/what-it-shows#1](https://github.com/furtivespy/what-it-shows/issues/1).
 
 **`hint`: booking-v3 tells people to type the month first, then reads the day first.** Its date
@@ -41,9 +41,16 @@ form, from tenants on booking-v3. The date is wrong before the parser ever sees 
 fix leaves these alone. This is the `hint` row, the one marked "not this ticket — no ticket of
 its own". Tracked in [furtivespy/what-it-shows#2](https://github.com/furtivespy/what-it-shows/issues/2).
 
+**One-day moves: invites land a day off, not with day and month swapped.** A Tuesday shows as
+the Monday before; a client in Lisbon gets Tuesday while a client in Toronto gets Monday. A
+day–month swap cannot move 12 May to 11 May. These are the reports footnoted under the `parser`
+row as "read as a one-day move": the desk read them right and filed them under the wrong cause.
+The pattern points at invite dates crossing a time zone or midnight. Tracked in
+[furtivespy/what-it-shows#3](https://github.com/furtivespy/what-it-shows/issues/3).
+
 ## Lessons
 
 - Same subject is not same cause. Merge on cause: tenant, form and channel, then the body.
-- A row marked "no ticket of its own" is a ticket nobody opened.
+- A row marked "no ticket of its own" is a ticket nobody opened. So is a footnote.
 
 <RenderStamp {signature} />
