@@ -4,7 +4,7 @@ title: '#4471 · three problems, one ticket'
 owner: furtivespy
 status: open
 reviewed: 2026-10-29
-signature: furtivespy
+signature: 'v1.eyJzdWIiOiI2NDQzIiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTMyODE0NDMsImV4cCI6MTc5MzM2Nzg0M30.BG1NgxdzmlZ4yCEAIslgHJP_VP5rVZ-gKprWn8PGXX8'
 ---
 
 <script>
